@@ -1,0 +1,18 @@
+service: docker-as-lambda
+
+frameworkVersion: '4'
+
+provider:
+  name: aws
+  ecr:
+    scanOnPush: true
+    images:
+      app_image:
+        path: ./
+  stage: dev
+  region: us-east-1
+
+functions:
+  hello:
+    image: 
+      name: app_image

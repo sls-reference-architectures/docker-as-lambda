@@ -10,6 +10,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "osls": "^3.76.1"
+    "osls": "^4.0.0"
   }
 }
