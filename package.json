@@ -1,0 +1,15 @@
+{
+  "name": "docker-as-lambda",
+  "version": "1.0.0",
+  "description": "Example serverless project using a Docker container to serve the code",
+  "main": "index.js",
+  "scripts": {
+    "docker:build": "docker build --platform linux/amd64 -t docker-image:test",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "osls": "^3.76.1"
+  }
+}
