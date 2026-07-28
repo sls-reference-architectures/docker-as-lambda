@@ -1,18 +1,32 @@
 service: docker-as-lambda
 
-frameworkVersion: '4'
+licenseKey: ${ssm:/aws/reference/secretsmanager/serverless-framework-access-key}
 
 provider:
-  name: aws
+  deploymentBucket:
+    name: com.reference-architecture.deploys
+  environment:
+    POWERTOOLS_LOGGER_SAMPLE_RATE: 1
   ecr:
-    scanOnPush: true
     images:
       app_image:
         path: ./
-  stage: dev
-  region: us-east-1
+  logRetentionInDays: 7
+  name: aws
+  tags:
+    lumigo:auto-trace: 'true'
 
 functions:
   hello:
-    image: 
+    image:
       name: app_image
+    events:
+      - httpApi:
+          method: get
+          path: /hello
+
+plugins:
+  - serverless-deployment-bucket
+
+package:
+  individually: true

@@ -1,15 +1,56 @@
 {
   "name": "docker-as-lambda",
   "version": "1.0.0",
-  "description": "Example serverless project using a Docker container to serve the code",
+  "description": "Template for basic JavaScript serverless project deployed as a Docker container image",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "docker:build": "docker build --platform linux/amd64 -t docker-image:test",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "deploy": "npx sls deploy --conceal",
+    "teardown": "npx sls remove",
+    "lint": "eslint .",
+    "lint:fix": "eslint '**.*.js' --fix",
+    "prettier": "npx prettier --write .",
+    "test": "npm run lint && npm run test:unit",
+    "test:e2e": "STAGE=dev npx jest e2e.test --config jest.config.e2e.js",
+    "test:int": "STAGE=dev npx jest int.test --config jest.config.int.js",
+    "test:unit": "POWERTOOLS_DEV=true POWERTOOLS_LOGGER_SAMPLE_RATE=1 npx jest unit.test",
+    "prepare": "husky"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sls-reference-architectures/docker-as-lambda.git"
+  },
+  "author": "Seth Orell",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sls-reference-architectures/docker-as-lambda/issues"
+  },
+  "homepage": "https://github.com/sls-reference-architectures/docker-as-lambda#readme",
   "devDependencies": {
-    "osls": "^4.0.0"
+    "@aws-sdk/client-cloudformation": "^3.1033.0",
+    "@eslint/js": "^10.0.1",
+    "@swc/core": "^1.15.41",
+    "@swc/jest": "^0.2.39",
+    "axios": "^1.17.0",
+    "eslint": "^10.7.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-jest": "^29.15.4",
+    "eslint-plugin-no-only-tests": "^3.4.0",
+    "globals": "^17.7.0",
+    "husky": "^9.1.7",
+    "jest": "^30.4.2",
+    "jest-extended": "^7.0.0",
+    "lint-staged": "^16.2.7",
+    "prettier": "^3.8.3",
+    "serverless": "^4.29.3",
+    "serverless-deployment-bucket": "^1.6.0"
+  },
+  "dependencies": {
+    "@aws-lambda-powertools/logger": "^2.33.0",
+    "@middy/core": "^7.7.0"
+  },
+  "lint-staged": {
+    "*.{js, mjs}": "eslint --cache --fix",
+    "*.{js,md,mjs,yml,json}": "npx prettier . --write --ignore-path .gitignore"
   }
 }
