@@ -38,14 +38,17 @@ deployed API via `axios`, reading the URL from CloudFormation outputs).
 ## Differences from `javascript-template-sls` (all required by the Docker packaging)
 
 - **`Dockerfile`**: multi-stage build. The builder stage runs `npm ci --omit=dev --ignore-scripts` and
-  copies `src/`; the final stage copies just `node_modules` and `src` into the Lambda base image. There's
-  no esbuild step — the container ships the handler source and its runtime dependencies directly.
-  `--ignore-scripts` is required here, not just good practice: without it, `npm ci` still runs the
-  `prepare` lifecycle script (`husky`), but `--omit=dev` means `husky` itself was never installed, so the
-  build fails with `husky: command not found`.
+  copies `src/`; the final stage copies `package.json`, `node_modules`, and `src` into the Lambda base
+  image. There's no esbuild step — the container ships the handler source and its runtime dependencies
+  directly. `--ignore-scripts` is required here, not just good practice: without it, `npm ci` still runs
+  the `prepare` lifecycle script (`husky`), but `--omit=dev` means `husky` itself was never installed, so
+  the build fails with `husky: command not found`.
 - **`"type": "module"` in `package.json`**: needed because there's no bundler to translate the handler's
   `import`/`export` syntax before it runs inside the container. Node's Lambda runtime needs to know the
-  source is ESM.
+  source is ESM — and it determines that by walking up from the loaded file looking for the _nearest_
+  `package.json`, so that file must actually be copied into the final image (`${LAMBDA_TASK_ROOT}`), not
+  just `node_modules`/`src`. Omitting it produces a confusing runtime error (`Cannot use import statement
+outside a module`) rather than a build-time failure.
 - **`serverless.yml`**: the `hello` function uses `image: { name: app_image }` instead of `handler:` +
   `build.esbuild`, and `provider.ecr.images.app_image.path` points at the repo root for the Docker build
   context.

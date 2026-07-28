@@ -7,6 +7,7 @@ COPY src ./src
 
 FROM public.ecr.aws/lambda/nodejs:24
 
+COPY --from=builder /build/package.json ${LAMBDA_TASK_ROOT}/package.json
 COPY --from=builder /build/node_modules ${LAMBDA_TASK_ROOT}/node_modules
 COPY --from=builder /build/src ${LAMBDA_TASK_ROOT}/src
 
