@@ -13,8 +13,6 @@ provider:
         path: ./
   logRetentionInDays: 7
   name: aws
-  tags:
-    lumigo:auto-trace: 'true'
 
 functions:
   hello:
