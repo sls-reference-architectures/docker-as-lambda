@@ -37,9 +37,12 @@ deployed API via `axios`, reading the URL from CloudFormation outputs).
 
 ## Differences from `javascript-template-sls` (all required by the Docker packaging)
 
-- **`Dockerfile`**: multi-stage build. The builder stage runs `npm ci --omit=dev` and copies `src/`; the
-  final stage copies just `node_modules` and `src` into the Lambda base image. There's no esbuild step —
-  the container ships the handler source and its runtime dependencies directly.
+- **`Dockerfile`**: multi-stage build. The builder stage runs `npm ci --omit=dev --ignore-scripts` and
+  copies `src/`; the final stage copies just `node_modules` and `src` into the Lambda base image. There's
+  no esbuild step — the container ships the handler source and its runtime dependencies directly.
+  `--ignore-scripts` is required here, not just good practice: without it, `npm ci` still runs the
+  `prepare` lifecycle script (`husky`), but `--omit=dev` means `husky` itself was never installed, so the
+  build fails with `husky: command not found`.
 - **`"type": "module"` in `package.json`**: needed because there's no bundler to translate the handler's
   `import`/`export` syntax before it runs inside the container. Node's Lambda runtime needs to know the
   source is ESM.

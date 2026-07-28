@@ -2,7 +2,7 @@ FROM public.ecr.aws/lambda/nodejs:24 AS builder
 
 WORKDIR /build
 COPY package.json package-lock.json ./
-RUN npm ci --omit=dev
+RUN npm ci --omit=dev --ignore-scripts
 COPY src ./src
 
 FROM public.ecr.aws/lambda/nodejs:24
