@@ -33,7 +33,6 @@
     "@swc/jest": "^0.2.39",
     "axios": "^1.19.0",
     "eslint": "^10.8.1",
-    "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-jest": "^29.15.4",
     "eslint-plugin-no-only-tests": "^3.4.0",
     "globals": "^17.7.0",
