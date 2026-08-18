@@ -39,5 +39,3 @@ jobs:
         run: npm run test:int
       - name: Run E2E tests
         run: npm run test:e2e
-      - name: Tear down stack
-        run: npm run teardown
