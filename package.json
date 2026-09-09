@@ -45,7 +45,7 @@
     "serverless-deployment-bucket": "^1.6.0"
   },
   "dependencies": {
-    "@aws-lambda-powertools/logger": "^2.34.0",
+    "@aws-lambda-powertools/logger": "^2.35.0",
     "@middy/core": "^7.9.2"
   },
   "lint-staged": {
