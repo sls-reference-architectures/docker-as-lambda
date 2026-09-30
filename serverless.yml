@@ -23,8 +23,5 @@ functions:
           method: get
           path: /hello
 
-plugins:
-  - serverless-deployment-bucket
-
 package:
   individually: true
