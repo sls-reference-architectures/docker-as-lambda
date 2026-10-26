@@ -11,6 +11,8 @@ provider:
     images:
       app_image:
         path: ./
+        # Lambda rejects the OCI image index buildx emits when it attaches provenance attestations
+        buildOptions: ['--provenance=false']
   logRetentionInDays: 7
   name: aws
 

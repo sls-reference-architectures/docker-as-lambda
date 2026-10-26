@@ -51,7 +51,9 @@ deployed API via `axios`, reading the URL from CloudFormation outputs).
 outside a module`) rather than a build-time failure.
 - **`serverless.yml`**: the `hello` function uses `image: { name: app_image }` instead of `handler:` +
   `build.esbuild`, and `provider.ecr.images.app_image.path` points at the repo root for the Docker build
-  context.
+  context. `buildOptions: ['--provenance=false']` is required: newer Docker (e.g. the `ubuntu-26.04`
+  runner image) attaches a provenance attestation by default, which turns the pushed image into an OCI
+  image index Lambda rejects with `The image manifest, config or layer media type ... is not supported`.
 - **No `provider.architecture: arm64`** (unlike the rest of the fleet): the container's CPU architecture
   is set by the platform Docker builds for, not by this Serverless Framework setting. Leaving it at the
   default (x86_64) avoids needing to pin `--platform` to match GitHub Actions' amd64 runners. Revisit if
